@@ -1,5 +1,8 @@
 Revision history for Short::URL
 
+0.006     2014-07-26 23:29:44-07:00 America/Los_Angeles
+    Fixed issue where reverse was used instead of return in encode.
+
 0.005     2014-07-26 22:59:48-07:00 America/Los_Angeles
     Changed no_naughties to no_vowels. Fixed issue where Template::Toolkit didn't handled returned reverse value properly.
     Also, added croak_on_error.

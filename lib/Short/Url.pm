@@ -96,7 +96,7 @@ sub encode {
     }   
 
     my $reversed_string = reverse $s;
-    reverse $reversed_string;
+    return $reversed_string;
 }
 
 sub decode { 
@@ -138,7 +138,7 @@ Short::URL - Encodes and Decodes short urls by using Bijection
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 
