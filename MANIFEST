@@ -7,4 +7,3 @@ Makefile.PL
 README
 dist.ini
 lib/Short/Url.pm
-test.pl
