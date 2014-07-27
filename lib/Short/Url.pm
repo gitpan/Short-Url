@@ -13,6 +13,14 @@ has alphabet => (
     },  
 );
 
+has clean_alphabet => (
+    is => 'ro',
+    isa => 'ArrayRef',
+    default => sub {
+        [qw/b c d f g h j k l m n p q r s t v w x y z B C D F G H J K L M N P Q R S T V W X Y Z 0 1 2 3 4 5 6 7 8 9/]
+    },  
+);
+
 has shuffled_alphabet => (
     is => 'ro',
     isa => 'ArrayRef',
@@ -21,10 +29,24 @@ has shuffled_alphabet => (
     },  
 );
 
+has clean_shuffled_alphabet => (
+    is => 'ro',
+    isa => 'ArrayRef',
+    default => sub {
+        [qw/G w d t H J 0 P W C 6 3 y K 8 L 7 X q 1 9 D c F x Z 5 M T N l z r s j h B 4 b f V Y Q g n S 2 m k p v R/]
+    },  
+);
+
 has use_shuffled_alphabet => (
     is => 'rw',
     isa => 'Any',
     default => undef,
+);
+
+has no_naughties => (
+    is => 'rw',
+    isa => 'Int',
+    default => 0,
 );
 
 has offset => (
@@ -35,7 +57,16 @@ has offset => (
 
 sub alphabet_in_use { 
     my ($self) = @_;
-    return $self->use_shuffled_alphabet ? $self->shuffled_alphabet : $self->alphabet;
+    my $alphabet;
+
+    if($self->no_naughties) {
+        $alphabet = $self->use_shuffled_alphabet ? $self->clean_shuffled_alphabet : $self->clean_alphabet;
+    }
+    else {
+        $alphabet = $self->use_shuffled_alphabet ? $self->shuffled_alphabet : $self->alphabet;
+    }
+
+    return $alphabet;
 }
 
 sub encode { 
@@ -56,24 +87,24 @@ sub encode {
 }
 
 sub decode { 
-	my ($self, $s) = @_;
-	
-	my $i = 0;
-	my $base = @{$self->alphabet_in_use};
-	my $last_index = $#{$self->alphabet_in_use};
-	
-	for my $char (split //, $s) { 
-		my ($index) = grep { $self->alphabet_in_use->[$_] eq $char } 0..$last_index;
-		Carp::croak "invalid character $char in $s" unless defined($index);
-		
-		$i = $i * $base + $index;
-	}
+    my ($self, $s) = @_;
+    
+    my $i = 0;
+    my $base = @{$self->alphabet_in_use};
+    my $last_index = $#{$self->alphabet_in_use};
+    
+    for my $char (split //, $s) { 
+        my ($index) = grep { $self->alphabet_in_use->[$_] eq $char } 0..$last_index;
+        Carp::croak "invalid character $char in $s" unless defined($index);
+        
+        $i = $i * $base + $index;
+    }
 
     $i -= $self->offset;
 
     Carp::croak "invalid string $s for offset @{[$self->offset]}. produces negative int: $i" if $i < 0;
 
-	return $i;
+    return $i;
 }
 
 1;
@@ -90,7 +121,7 @@ Short::URL - Encodes and Decodes short urls by using Bijection
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 SYNOPSIS
 
@@ -191,6 +222,31 @@ to what id in your databse, or how many ids you have in total. Below is the shuf
     [qw/G w d A t H J 0 P o W C 6 3 y K 8 L u 7 X E O a e q 1 9 D c F x Z 5 M T N l z r i s j h B 4 b I f V Y Q g n S 2 m U k p v R/]
 
 This is just a shuffled version of L</alphabet>. The default for L</use_shuffled_alphabet> is undef.
+
+=head2 no_naughties
+
+As pointed out L<here|http://stackoverflow.com/questions/742013/how-to-code-a-url-shortener/742047#comment25208796_742047>, there is the possibility of creating
+naughty words. For instance:
+
+    my $encoded = $su->encode(7465182);
+
+    print "Encoded naughty: $encoded\n"; #prints F_ck, where _ is replaced with u
+
+If you want to avoid this, you can set L</no_naughties> to 1:
+
+    $su->no_naughties(1);
+
+    #or
+    my $su = Short::URL->new(no_naughties => 1);
+
+This uses a separate alphabet with no vowels in it (aeiou), so that no naughty words can be formed. If you also have L</use_shuffled_alphabet> set to 1, that will still be
+respected. L<Short::URL> will just use a clean version of the shuffled alphabet listed under L</use_shuffled_alphabet>. Below are the two clean alphabets:
+
+   #clean_alphabet
+   [qw/b c d f g h j k l m n p q r s t v w x y z B C D F G H J K L M N P Q R S T V W X Y Z 0 1 2 3 4 5 6 7 8 9/]
+
+    #clean_shuffled_alphabet
+    [qw/G w d t H J 0 P W C 6 3 y K 8 L 7 X q 1 9 D c F x Z 5 M T N l z r s j h B 4 b f V Y Q g n S 2 m k p v R/]
 
 =head1 SEE ALSO
 
