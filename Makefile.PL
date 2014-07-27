@@ -21,11 +21,10 @@ my %WriteMakefileArgs = (
   "NAME" => "Short::Url",
   "PREREQ_PM" => {
     "Carp" => 0,
-    "List::Util" => 0,
     "Mouse" => 0,
     "strict" => 0
   },
-  "VERSION" => "0.006",
+  "VERSION" => "0.007",
   "test" => {
     "TESTS" => ""
   }
@@ -34,7 +33,6 @@ my %WriteMakefileArgs = (
 
 my %FallbackPrereqs = (
   "Carp" => 0,
-  "List::Util" => 0,
   "Mouse" => 0,
   "strict" => 0
 );

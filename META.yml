@@ -14,9 +14,8 @@ meta-spec:
 name: Short-Url
 requires:
   Carp: '0'
-  List::Util: '0'
   Mouse: '0'
   strict: '0'
 resources:
   bugtracker: https://github.com/srchulo/Short--Url/issues
-version: '0.006'
+version: '0.007'

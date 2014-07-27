@@ -1,7 +1,6 @@
 package Short::URL;
 use strict;
 use Mouse;
-use List::Util qw//;
 use Carp qw//;
 #ABSTRACT: Encodes and Decodes short urls by using Bijection
 
@@ -138,7 +137,7 @@ Short::URL - Encodes and Decodes short urls by using Bijection
 
 =head1 VERSION
 
-version 0.006
+version 0.007
 
 =head1 SYNOPSIS
 
