@@ -71,7 +71,6 @@ sub alphabet_in_use {
         $alphabet = $self->use_shuffled_alphabet ? $self->shuffled_alphabet : $self->alphabet;
     }
 
-    print "@$alphabet\n";
     return $alphabet;
 }
 
@@ -140,7 +139,7 @@ Short::URL - Encodes and Decodes short urls by using Bijection
 
 =head1 VERSION
 
-version 0.010
+version 0.011
 
 =head1 SYNOPSIS
 
@@ -248,7 +247,7 @@ L</offset> allows you to shift all integers that you encode forward by a certain
 return the integer for that string by substracting your offset from what the original number would have been. Offset can be useful if you don't want people
 to know you have a small number of items by starting with a larger offset, or if you want them to have less of an idea what ids really correspond to what strings.
 When used in combination with L</use_shuffled_alphabet>, it is a lot harder to track what string would correspond
-to what id in your databse, or how many ids you have in total. 
+to what id in your database, or how many ids you have in total. 
 
 =head2 use_shuffled_alphabet
 

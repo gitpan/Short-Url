@@ -18,4 +18,4 @@ requires:
   strict: '0'
 resources:
   bugtracker: https://github.com/srchulo/Short--Url/issues
-version: '0.010'
+version: '0.011'
